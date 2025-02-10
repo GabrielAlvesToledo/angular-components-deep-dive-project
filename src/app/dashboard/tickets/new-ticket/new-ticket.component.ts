@@ -1,4 +1,4 @@
-import { Component, ElementRef, viewChild, ViewChild } from "@angular/core";
+import { afterNextRender, afterRender, AfterViewInit, Component, ElementRef, viewChild, ViewChild } from "@angular/core";
 import { ButtonComponent } from "../../../shared/button/button.component";
 import { ControlComponent } from "../../../shared/control/control.component";
 import { FormsModule } from "@angular/forms";
@@ -11,9 +11,23 @@ import { FormsModule } from "@angular/forms";
     styleUrl: './new-ticket.component.css'
 })
 
-export class NewTicketComponent{
+export class NewTicketComponent implements AfterViewInit{
     //@ViewChild('form') form?: ElementRef<HTMLFormElement>;
     private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
+
+    constructor(){
+        afterRender(() => {
+            console.log('afterRender');
+        });
+
+        afterNextRender(() => {
+            console.log('afterNextRender');
+        });
+    }
+
+    ngAfterViewInit(): void {
+        console.log(this.form().nativeElement);
+    }
     onSubmit(title: string, text: string){
         console.log(title);
         console.log(text);
